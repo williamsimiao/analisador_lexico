@@ -12,17 +12,19 @@ unsigned_int    {digito}+\n
 signed_int  [+-]{unsigned_int}
 unsigned_float  {digito}*"."{digito}+\n|{digito}+"."{digito}*\n
 signed_float    [+-]{digito}+"."{digito}*\n
-comment "(""*".*"*"")"\n
+clinha [a-zA-Z0-9\!\@\#\$\%\&\(\¹\²\³\£\¢\¬\,\<\.\>\;\"\?\·\°\^\~\}\º\{\ª\`\'\"\'\[\]\/\\]
+cComParenteses {clinha}|\)
+comment  \(\*{cComParenteses}*\*(({clinha}{cComParenteses}*\*)|\*)*\)\n
 numero  {unsigned_int}|{signed_int}|{unsigned_float}|{signed_float}
-begin "abre"\n
-end "fecha"\n
+begin (abre)\n
+end (fecha)\n
 outro	.*\n
 %%
 {begin}		{abrir();}
 {end}		{fechar();}
 {id}		{printf("LOG: Identificador\n");}
 {numero}    {printf("LOG: Numero\n");}
-{comment}   {printf("LOG: Comentario\n");}
+{comment}   {printf("LOG: Comentario\n");} 
 {outro}		{printf("LOG: :-(\n");}
 %%
 /* recomendavel declarar sempre
