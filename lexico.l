@@ -1,9 +1,13 @@
 %{
 #include <stdio.h>
 
-// ---- functions area
-void abrir();
-void fechar();
+// EXPRESSÃO REGULAR DO TOKEN 'COMMENT': \(\*C*\*((C'C*\*)|\*)*\)
+// Notação:
+// 		\* -> Caracter asterisco.
+//		* -> Operador estrela.
+//		\( -> Caracter '('
+
+enum tokens{LER, IMPRIMIR, INICIO, END, NUM, COMMENT, OUTRO, ID};
 
 %}
 id	[a-zA-Z][a-zA-Z0-9]*\n
@@ -19,31 +23,20 @@ numero  {unsigned_int}|{signed_int}|{unsigned_float}|{signed_float}
 begin (abre)\n
 end (fecha)\n
 outro	.*\n
-%%
-{begin}		{abrir();}
-{end}		{fechar();}
-{id}		{printf("LOG: Identificador\n");}
-{numero}    {printf("LOG: Numero\n");}
-{comment}   {printf("LOG: Comentario\n");} 
-{outro}		{printf("LOG: :-(\n");}
-%%
-/* recomendavel declarar sempre
-   funcao yywrap() */
-int yywrap ();
-/* programa principal */
-main() {
-  yylex(); /* scanner gerado por Flex */
-}
 
+%%
+ler       {return LER;}
+imprimir  {return IMPRIMIR;}
+{begin}		{return INICIO;}
+{end}		  {return END;}
+{id}		  {return ID;}
+{numero}  {return NUM;}
+{comment} {return COMMENT;}
+[ \t\n]+  {;}
+{outro}		{return yytext[0];}
+%%
+
+int yywrap ();
 int yywrap() {
  return 1;
-}
-
-void abrir() {
-	printf("LOG: Abrir. (abrir o que?)\n");			
-}
-
-void fechar() {
-	printf("LOG: Encerrando...\n");
-	exit(1);				
 }
