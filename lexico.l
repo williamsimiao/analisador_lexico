@@ -7,10 +7,11 @@
 //		* -> Operador estrela.
 //		\( -> Caracter '('
 
-enum tokens{LER, IMPRIMIR, INICIO, END, NUM, COMMENT, OUTRO, ID};
+enum tokens{LER, IMPRIMIR, INICIO, END, NUM, COMMENT, OUTRO, ID, EXPRESSAO};
 
 %}
 id	[a-zA-Z][a-zA-Z0-9]*
+operador	[*\/\+-]
 digito   [0-9]
 unsigned_int    {digito}+
 signed_int  [+-]{unsigned_int}
@@ -20,20 +21,22 @@ clinha [a-zA-Z0-9\!\@\#\$\%\&\(\¹\²\³\£\¢\¬\,\<\.\>\;\"\?\·\°\^\~\}\º\{
 cComParenteses {clinha}|\)
 comment  \(\*{cComParenteses}*\*(({clinha}{cComParenteses}*\*)|\*)*\)
 numero  {unsigned_int}|{signed_int}|{unsigned_float}|{signed_float}
+expressao	{id}{operador}{id}|{numero}{operador}{numero}|{numero}{operador}{id}|{id}{operador}{numero}
 begin (abre)\n
 end (fecha)\n
-outro	.*
+outro	.
 
 %%
-ler       {printf("LER\n"); return LER;}
-imprimir  {printf("IMPRIMIR\n"); return IMPRIMIR;}
-{begin}	  {printf("INICIO\n"); return INICIO;}
-{end}	  {printf("END\n"); return END;}
-{id}	  {printf("ID\n"); return ID;}
-{numero}  {printf("NUM\n"); return NUM;}
-{comment} {printf("COMMENT\n"); return COMMENT;}
+ler       {printf("LER\n");}
+imprimir  {printf("IMPRIMIR\n");}
+{begin}	  {printf("INICIO\n");}
+{end}	  {printf("END\n");}
+{id}	  {printf("ID\n");}
+{numero}  {printf("NUM\n");}
+{comment} {printf("COMMENT\n");}
 [ \t\n]+  {;}
-{outro}		{printf("OUTRO\n"); return yytext[0];}
+{expressao} {printf("EXPRESSAO\n");}
+{outro}		{printf("OUTRO\n");}
 %%
 
 int yywrap ();
