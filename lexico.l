@@ -34,8 +34,8 @@ imprimir  {printf("IMPRIMIR\n");}
 {id}	  {printf("ID\n");}
 {numero}  {printf("NUM\n");}
 {comment} {printf("COMMENT\n");}
-[ \t\n]+  {;}
 {expressao} {printf("EXPRESSAO\n");}
+[ \t\n]+  {;}
 {outro}		{printf("OUTRO\n");}
 %%
 
