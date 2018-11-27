@@ -21,7 +21,6 @@ clinha [a-zA-Z0-9\!\@\#\$\%\&\(\¹\²\³\£\¢\¬\,\<\.\>\;\"\?\·\°\^\~\}\º\{
 cComParenteses {clinha}|\)
 comment  \(\*{cComParenteses}*\*(({clinha}{cComParenteses}*\*)|\*)*\)
 numero  {unsigned_int}|{signed_int}|{unsigned_float}|{signed_float}
-expressao	{id}{operador}{id}|{numero}{operador}{numero}|{numero}{operador}{id}|{id}{operador}{numero}
 begin (abre)\n
 end (fecha)\n
 outro	.
@@ -32,9 +31,9 @@ imprimir  {printf("IMPRIMIR\n");}
 {begin}	  {printf("INICIO\n");}
 {end}	  {printf("END\n");}
 {id}	  {printf("ID\n");}
-{numero}  {printf("NUM\n");}
+{operador} {printf("OPERADOR\n");}
+{numero}  {printf("NUM: %s , valor %d\n", yytext, atoi( yytext ));}
 {comment} {printf("COMMENT\n");}
-{expressao} {printf("EXPRESSAO\n");}
 [ \t\n]+  {;}
 {outro}		{printf("OUTRO\n");}
 %%
